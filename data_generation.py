@@ -3,6 +3,7 @@ import re
 from functools import reduce
 from multiprocessing import Pool
 from multiprocessing.dummy import Pool as ThreadPool
+from collections import Counter
 
 import requests
 
@@ -124,13 +125,15 @@ def get_all_trains_info():
     pool = ThreadPool(1)
     results = pool.map(get_train_info_by_name, list(trains))
 
+    if len(results) < 0:
+        return []
     trains_detail = reduce(lambda x,y:x+y, results)
     trains_detail.sort(key = lambda t:t['arrive_hongqiao_time'])
     return trains_detail
 
 
-def build_rail_data():
-    pass
+def build_rail_data(file_name):
+    railway_path = {}
 
 
 def save2local():
@@ -139,9 +142,11 @@ def save2local():
 
 if __name__ == "__main__":
     trains = get_all_trains_info()
-    trains = filter(lambda i:i['arrive_hongqiao_station_number']!=-1, trains)
-    # '*****':1
+    trains = list(filter(lambda i:i['arrive_hongqiao_station_number']!=-1, trains))
     # '上海':1
+    # '安亭北':1
+    # '常州北':1
+    # '*****':1
     # '上海南':4
     # '上海西':1
     # '南京南':6
@@ -156,7 +161,7 @@ if __name__ == "__main__":
     # '苏州北':32
     # '金山北':7
     # '阳澄湖':1
-    # __len__:16
+
     for t in filter(lambda i:i['arrive_hongqiao_station_number']!=-1, trains):
         print(
             t['arrive_hongqiao_station_number'], "\t", 

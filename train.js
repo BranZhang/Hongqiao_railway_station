@@ -1,22 +1,19 @@
 class Train {
+
     constructor(raw_data) {
         this.name = name;
     }
 
     showName() {
         
-        return this;
+        return Train.railway_data;
     }
  
-    static showAge() {
-        
-        return this;
+    static load_railway_data(data) {
+        Train.railway_data = data;
+    }
+
+    static load_railway_path_data(data) {
+        Train.railway_path_data = data;
     }
 }
-
-$(function () {
-    var raw_data = {"trains": [{}, {}]};
-    
-
-
-});
