@@ -44,8 +44,13 @@
             Train.load_railway_data(raw_railway_data);
             Train.load_railway_path_data(railway_path_data);
 
-            var t = new Train("123");
-            console.log(t.showName());
+            trains = [];
+            for (var t in trains_info) {
+                var train = new Train(t);
+                if (train.isLegal()) {
+                    trains.push(train);
+                }
+            }
 
             // mapboxgl.accessToken = 'pk.eyJ1IjoiYnJhbnpoYW5nIiwiYSI6ImNrM2U2dHh0ejE2YngzaXFlcjFvdG96b2EifQ.KSQQ0l2qGa1-nrEKn3YKPw';
             // var map = new mapboxgl.Map({
