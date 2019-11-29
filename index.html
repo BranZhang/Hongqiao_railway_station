@@ -89,7 +89,13 @@
                         'icon-allow-overlap': true,
                         'icon-ignore-placement': true,
                         'icon-rotate': ["get", "icon_rotate"],
-                        'icon-size': 0.05,
+                        'icon-size': [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            15, 0.5,
+                            18, 1
+                        ],
                     },
                     'paint': {
                     }
