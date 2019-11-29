@@ -8,6 +8,8 @@ class Train {
         this.station_number = raw_data['arrive_hongqiao_station_number'];
         this.train_type = raw_data['train_type'];
         this.train_count = 16;
+
+        this.legal = this.isLegal();
     }
 
     isLegal() {
@@ -19,6 +21,7 @@ class Train {
             return false;
         }
 
+        this.route_path_ids = Train.railway_path_data[this.path_code][this.station_number];
         return true;
     }
 
@@ -38,6 +41,9 @@ class Train {
     }
  
     static load_railway_data(data) {
+        // 单量车厢长度为223.45米
+        Train.single_length = 223.45;
+
         Train.railway_data = {};
         Train.station_data = {};
         data['features'].forEach(f => {
@@ -46,15 +52,68 @@ class Train {
                 Train.station_data[f["properties"]["detail"]["station_number"]] = f["properties"]["id"];
             }
         });
-
-        Train.railway_data = data;
     }
 
     static load_railway_path_data(data) {
         Train.railway_path_data = {};
         for (var i in data) {
-            Train.railway_path_data[i] = {}
-            data[i]["station"].forEach(t => {Train.railway_path_data[i][t["number"]] = data[i]["preffix"]+t["route"]})
+            Train.railway_path_data[i] = {};
+
+            for (var j=0; j<data[i]["station"].length; j++) {
+
+                var t = data[i]["station"][j];
+                var ids = [];
+                Train._concat_list(ids, data[i]["preffix"]);
+                Train._concat_list(ids, t["route"]);
+
+                var coordinates = [];
+
+                if (ids.length < 2) {
+                    continue;
+                }
+
+                var second_last_index = Train.railway_data[ids[1]]["geometry"]["coordinates"].length - 1;
+
+                if (Train._coord_same(Train.railway_data[ids[0]]["geometry"]["coordinates"][0],Train.railway_data[ids[1]]["geometry"]["coordinates"][0])
+                 || Train._coord_same(Train.railway_data[ids[0]]["geometry"]["coordinates"][0],Train.railway_data[ids[1]]["geometry"]["coordinates"][second_last_index])) {
+                    Train._concat_list(coordinates, Train.railway_data[ids[0]]["geometry"]["coordinates"], true);
+                }
+                else {
+                    Train._concat_list(coordinates, Train.railway_data[ids[0]]["geometry"]["coordinates"]);
+                }
+
+                for (var k=1; k<ids.length; k++) {
+                    var total_last_index = coordinates.length - 1;
+                    var current_last_index = Train.railway_data[ids[k]]["geometry"]["coordinates"].length - 1;
+
+                    if (Train._coord_same(coordinates[total_last_index],Train.railway_data[ids[k]]["geometry"]["coordinates"][0])
+                    || Train._coord_same(coordinates[total_last_index],Train.railway_data[ids[k]]["geometry"]["coordinates"][current_last_index])) {
+                       Train._concat_list(coordinates, Train.railway_data[ids[k]]["geometry"]["coordinates"], true);
+                   }
+                   else {
+                       Train._concat_list(coordinates, Train.railway_data[ids[k]]["geometry"]["coordinates"]);
+                   }
+                }
+
+                Train.railway_path_data[i][t["number"]] = coordinates;
+            }
+        }
+    }
+
+    static _coord_same(coord1, coord2) {
+        return (coord1[0] == coord2[0]) && (coord1[1] == coord2[1]);
+    }
+
+    static _concat_list(list1, list2, reverse=false) {
+        if (reverse) {
+            for (var i=0; i<list2.length; i++) {
+                list1.push(list2[i]);
+            }
+        }
+        else {
+            for (var i=list2.length-1; i>=0; i--) {
+                list1.push(list2[i]);
+            }
         }
     }
 }

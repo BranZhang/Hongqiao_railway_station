@@ -33,7 +33,7 @@
             trains = [];
             trains_info.forEach(t => {
                 var train = new Train(t);
-                if (train.isLegal()) {
+                if (train.legal) {
                     trains.push(train);
                 }
             });
@@ -51,6 +51,8 @@
             var virtualStartTime = new Date(2019, 0, 1, 19, 22, 0);
             var virtualCurrentTime = virtualStartTime;
             var virtualEndTime = new Date(2019, 0, 1, 19, 50, 0);
+            // 以 N 倍速播放
+            var speed = 10;
 
             map.on('load', function() {
                 var imageSource = {
@@ -97,8 +99,7 @@
                             18, 1
                         ],
                     },
-                    'paint': {
-                    }
+                    'paint': {}
                 });
 
                 animateTrain();
@@ -106,7 +107,7 @@
                 function animateTrain(timestamp) {
                     
                     if (timestamp !== undefined) {
-                        virtualCurrentTime = new Date(virtualStartTime.getTime() + timestamp);
+                        virtualCurrentTime = new Date(virtualStartTime.getTime() + timestamp*speed);
                     }
 
                     var updatedFeatures = [];
