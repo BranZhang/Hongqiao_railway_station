@@ -4,11 +4,12 @@
         <meta charset='utf-8'/>
         <title>trains</title>
         <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-        <script src='railway.js'></script>
-        <script src='railway_path.js'></script>
+        <script src='railway_data.js'></script>
+        <script src='railway_path_data.js'></script>
+        <script src='trains_info_data.js'></script>
         <script src='train.js'></script>
-        <!-- <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script> -->
-        <!-- <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet'/> -->
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet'/>
         <style>
             body {
                 margin: 0;
@@ -24,119 +25,104 @@
         </style>
     </head>
     <body>
-        <style>
-            button {
-                position: absolute;
-                margin: 20px;
-            }
-
-            #pause::after {
-                content: 'Pause';
-            }
-
-            #pause.pause::after {
-                content: 'Play';
-            }
-        </style>
         <div id='map'></div>
-        <button id='pause'></button>
         <script>
             Train.load_railway_data(raw_railway_data);
             Train.load_railway_path_data(railway_path_data);
 
             trains = [];
-            for (var t in trains_info) {
+            trains_info.forEach(t => {
                 var train = new Train(t);
                 if (train.isLegal()) {
                     trains.push(train);
                 }
-            }
+            });
 
-            // mapboxgl.accessToken = 'pk.eyJ1IjoiYnJhbnpoYW5nIiwiYSI6ImNrM2U2dHh0ejE2YngzaXFlcjFvdG96b2EifQ.KSQQ0l2qGa1-nrEKn3YKPw';
-            // var map = new mapboxgl.Map({
-            //     container: 'map',
-            //     style: 'mapbox://styles/mapbox/streets-v11',
-            //     center: [121.315625, 31.196169],
-            //     zoom: 8
-            // });
+            mapboxgl.accessToken = 'pk.eyJ1IjoiYnJhbnpoYW5nIiwiYSI6ImNrM2U2dHh0ejE2YngzaXFlcjFvdG96b2EifQ.KSQQ0l2qGa1-nrEKn3YKPw';
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/branzhang/ck3e2bq8g1pj21cquzpiuhwmc',
+                center: [121.315625, 31.196169],
+                zoom: 17
+            });
 
-            // var speedFactor = 30;
-            // // number of frames per longitude degree
-            // var animation;
-            // // to store and cancel the animation
-            // var startTime = 0;
-            // var progress = 0;
-            // var pauseButton = document.getElementById('pause');
+            // to store and cancel the animation
+            var animation;
+            var virtualStartTime = new Date(2019, 0, 1, 19, 22, 0);
+            var virtualCurrentTime = virtualStartTime;
+            var virtualEndTime = new Date(2019, 0, 1, 19, 50, 0);
 
-            // map.on('load', function() {
+            map.on('load', function() {
+                var imageSource = {
+                    'body': 'images/body.png',
+                    'high_head': 'images/high_head.png',
+                    'high_tail': 'images/high_tail.png',
+                    'normal_head': 'images/normal_head.png',
+                    'normal_tail': 'images/normal_tail.png',
+                }
 
-            //     // add the line which will be modified in the animation
-            //     map.addLayer({
-            //         'id': 'line-animation',
-            //         'type': 'line',
-            //         'source': {
-            //             'type': 'geojson',
-            //             'data': ''
-            //         },
-            //         'layout': {
-            //             'line-cap': 'round',
-            //             'line-join': 'round'
-            //         },
-            //         'paint': {
-            //             'line-color': '#ed6498',
-            //             'line-width': 5,
-            //             'line-opacity': .8
-            //         }
-            //     });
+                for(var imageName in imageSource) {
+                    (function(tmp) {
+                        map.loadImage(imageSource[tmp], function (error, image) {
+                            if (error) {
+                                throw error;
+                            }
+                            map.addImage(tmp, image);
+                        });
+                    })(imageName);
+                }
 
-            //     startTime = performance.now();
+                map.addSource('train_source', {
+                    type: 'geojson',
+                    data: {
+                        "type": "FeatureCollection",
+                        "features": []
+                    }
+                });
 
-            //     animateLine();
+                map.addLayer({
+                    'id': 'train_layer',
+                    'type': 'symbol',
+                    'source': 'train_source',
+                    'layout': {
+                        'icon-image': ["get", "train_type"],
+                        'icon-allow-overlap': true,
+                        'icon-ignore-placement': true,
+                        'icon-rotate': ["get", "icon_rotate"],
+                        'icon-size': 0.05,
+                    },
+                    'paint': {
+                    }
+                });
 
-            //     // click the button to pause or play
-            //     pauseButton.addEventListener('click', function() {
-            //         pauseButton.classList.toggle('pause');
-            //         if (pauseButton.classList.contains('pause')) {
-            //             cancelAnimationFrame(animation);
-            //         } else {
-            //             resetTime = true;
-            //             animateLine();
-            //         }
-            //     });
+                animateTrain();
 
-            //     // reset startTime and progress once the tab loses or gains focus
-            //     // requestAnimationFrame also pauses on hidden tabs by default
-            //     document.addEventListener('visibilitychange', function() {
-            //         resetTime = true;
-            //     });
+                function animateTrain(timestamp) {
+                    
+                    if (timestamp !== undefined) {
+                        virtualCurrentTime = new Date(virtualStartTime.getTime() + timestamp);
+                    }
 
-            //     // animated in a circle as a sine wave along the map.
-            //     function animateLine(timestamp) {
-            //         if (resetTime) {
-            //             // resume previous progress
-            //             startTime = performance.now() - progress;
-            //             resetTime = false;
-            //         } else {
-            //             progress = timestamp - startTime;
-            //         }
+                    var updatedFeatures = [];
 
-            //         // restart if it finishes a loop
-            //         if (progress > speedFactor * 360) {
-            //             startTime = timestamp;
-            //             geojson.features[0].geometry.coordinates = [];
-            //         } else {
-            //             var x = progress / speedFactor;
-            //             // draw a sine wave with some math.
-            //             var y = Math.sin(x * Math.PI / 90) * 40;
-            //             // append new coordinates to the lineString
-            //             geojson.features[0].geometry.coordinates.push([x, y]);
-            //             // then update the map
-            //             map.getSource('line-animation').setData(geojson);
-            //         }
-            //         // Request the next frame of the animation.
-            //         animation = requestAnimationFrame(animateLine);
-            //     }
-            // });
+                    trains.forEach(t => {
+                        updatedFeatures.push.apply(updatedFeatures, t.getRealTimeLocation(virtualCurrentTime));
+                    });
+
+                    map.getSource('train_source').setData({
+                        "type": "FeatureCollection",
+                        "features": updatedFeatures
+                    });
+
+                    if (virtualCurrentTime < virtualEndTime) {
+                        // Request the next frame of the animation.
+                        animation = requestAnimationFrame(animateTrain);
+                    }
+                    else {
+                        console.log("end.");
+                    }                    
+                }
+            });
         </script>
     </body>
 </html>

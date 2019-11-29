@@ -1078,7 +1078,7 @@ var trains_info = [
 	},
 	{
 		"name": "G7314",
-		"path_code": "",
+		"path_code": "N_normal_out",
 		"route_type": "pass_in",
 		"current_station": "上海虹桥",
 		"next_station": "昆山南",
