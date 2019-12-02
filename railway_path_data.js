@@ -16,8 +16,12 @@ var railway_path_data = {
         ]
     },
     "N_normal_in": {
-        "preffix": [2],
+        "preffix": [2,301,302,303,304,286,287,288,241],
         "station": [
+            {"number": 20, "route": [242,239,219,162,163,161,160,133,332]},
+            {"number": 21, "route": [242,239,219,162,163,98,333]},
+            {"number": 22, "route": []},
+            {"number": 23, "route": [242,239,240,158,335]}
         ]
     },
     "N_high_out": {

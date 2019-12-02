@@ -1088,7 +1088,7 @@ var trains_info = [
 		],
 		"departure_hongqiao_time": [
 			20,
-			44
+			31
 		],
 		"arrive_hongqiao_station_number": 20,
 		"route_start_station": "黄山北",

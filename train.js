@@ -11,11 +11,9 @@ class Train {
         this.departure_hongqiao_time = new Date(2019, 0, 1, raw_data['departure_hongqiao_time'][0], raw_data['departure_hongqiao_time'][1], 0);
         this.train_count = 16;
 
-        //默认加速到满速需要的距离为0km。现在暂时不考虑初期加速的情况。
-        this.accelerate_distance = 0;
-
-        //默认速度为300km/h。
-        this.speed = 300;
+        //默认在可视范围内列车都保持加速度不变
+        //默认加速度为1m/s2
+        this.accelerate = 1;
 
         this.legal = this.isLegal();
     }
@@ -35,9 +33,9 @@ class Train {
 
     getRealTimeLocation(time) {
         var passed_distance = 0;
-        var train_index = this.train_count;
+        var train_index = this.train_count+1;
         var result_coords = [];
-        var results = []
+        var results = [];
 
         if (this.route_type === 'pass_in' || this.route_type === 'first') {
             // 从虹桥出发的列车
@@ -51,11 +49,11 @@ class Train {
             }
             else {
                 //单位：米
-                passed_distance = (time-this.departure_hongqiao_time)/360 * this.speed;
+                passed_distance = (time-this.departure_hongqiao_time)/1000 * (time-this.departure_hongqiao_time)/1000*this.accelerate / 2;
             }
 
-            if (passed_distance < this.accelerate_distance) {
-                // 还处于加速阶段，暂时不考虑
+            if (passed_distance > Train.visible_length) {
+                return [];
             }
 
             for(var i=this.route_path_coords.length-1; i > 0; i--) {
@@ -79,7 +77,14 @@ class Train {
                 }
             }
 
-
+            for (var k=0; k<result_coords.length-1; k++) {
+                var coord1 = result_coords[k];
+                var coord2 = result_coords[k+1];
+                var center = [(coord1[0]+coord2[0])/2, (coord1[1]+coord2[1])/2];
+                var angle = Train.calAngle(coord1[0], coord1[1], coord2[0], coord2[1]);
+                
+                results.push(Train.buildGeoJSON(center, k, this.train_type, angle));
+            }
         }
         else {
             passed_distance = 0;
@@ -103,8 +108,13 @@ class Train {
     }
  
     static load_railway_data(data) {
+        console.log("start.");
+
+        //在进站或者出站的5000米内可间，且保持加速度不变
+        Train.visible_length = 5000;
+
         // 单量车厢长度为223.45米
-        Train.single_length = 223.45;
+        Train.single_length = 22.345;
 
         Train.railway_data = {};
         Train.station_data = {};
@@ -138,23 +148,28 @@ class Train {
 
                 if (Train._coord_same(Train.railway_data[ids[0]]["geometry"]["coordinates"][0],Train.railway_data[ids[1]]["geometry"]["coordinates"][0])
                  || Train._coord_same(Train.railway_data[ids[0]]["geometry"]["coordinates"][0],Train.railway_data[ids[1]]["geometry"]["coordinates"][second_last_index])) {
-                    Train._concat_list(coordinates, Train.railway_data[ids[0]]["geometry"]["coordinates"], true);
+                    Train._concat_list(coordinates, Train.railway_data[ids[0]]["geometry"]["coordinates"], true, false);
                 }
                 else {
-                    Train._concat_list(coordinates, Train.railway_data[ids[0]]["geometry"]["coordinates"]);
+                    Train._concat_list(coordinates, Train.railway_data[ids[0]]["geometry"]["coordinates"], false, false);
                 }
 
                 for (var k=1; k<ids.length; k++) {
                     var total_last_index = coordinates.length - 1;
-                    var current_last_index = Train.railway_data[ids[k]]["geometry"]["coordinates"].length - 1;
 
-                    if (Train._coord_same(coordinates[total_last_index],Train.railway_data[ids[k]]["geometry"]["coordinates"][0])
-                    || Train._coord_same(coordinates[total_last_index],Train.railway_data[ids[k]]["geometry"]["coordinates"][current_last_index])) {
-                       Train._concat_list(coordinates, Train.railway_data[ids[k]]["geometry"]["coordinates"], true);
-                   }
-                   else {
-                       Train._concat_list(coordinates, Train.railway_data[ids[k]]["geometry"]["coordinates"]);
-                   }
+                    if (Train._coord_same(coordinates[total_last_index],Train.railway_data[ids[k]]["geometry"]["coordinates"][0])) {
+                       Train._concat_list(coordinates, Train.railway_data[ids[k]]["geometry"]["coordinates"], false, true);
+                    }
+                    else {
+                        Train._concat_list(coordinates, Train.railway_data[ids[k]]["geometry"]["coordinates"], true, true);
+                    }
+                    // if (Train._coord_same(coordinates[total_last_index],Train.railway_data[ids[k]]["geometry"]["coordinates"][0])
+                    // || Train._coord_same(coordinates[total_last_index],Train.railway_data[ids[k]]["geometry"]["coordinates"][current_last_index])) {
+                    //    Train._concat_list(coordinates, Train.railway_data[ids[k]]["geometry"]["coordinates"], true);
+                    // }
+                    // else {
+                    //     Train._concat_list(coordinates, Train.railway_data[ids[k]]["geometry"]["coordinates"]);
+                    // }
                 }
 
                 Train.railway_path_data[i][t["number"]] = coordinates;
@@ -163,18 +178,56 @@ class Train {
     }
 
     static _coord_same(coord1, coord2) {
-        return (coord1[0] == coord2[0]) && (coord1[1] == coord2[1]);
+        return Math.abs(coord1[0]-coord2[0]<0.0000000000001) && Math.abs(coord1[1]-coord2[1]<0.0000000000001);
     }
 
-    static _concat_list(list1, list2, reverse=false) {
+    static _concat_list(list1, list2, reverse, removeFirst) {
         if (reverse) {
-            for (var i=list2.length-1; i>=0; i--) {
+            var i = list2.length-1;
+            if (removeFirst) {
+                i -= 1;
+            }
+            for (; i>=0; i--) {
                 list1.push(list2[i]);
             }
         }
         else {
-            for (var i=0; i<list2.length; i++) {
+            var i = 0;
+            if (removeFirst) {
+                i += 1;
+            }
+            for (; i<list2.length; i++) {
                 list1.push(list2[i]);
+            }
+        }
+    }
+
+    // 以正东方向为0度
+    static calAngle(lon1, lat1, lon2, lat2) {
+        if (lat1 == lat2) {
+            if (lon2 > lon1) {
+                return 90 + 90;
+            }
+            else {
+                return 270 + 90;
+            }
+        }
+
+        var angle = Math.atan(Math.abs((lon2-lon1)/(lat2-lat1))) * 180 / Math.PI
+        if (lon2 > lon1) {
+            if (lat2 > lat1) {
+                return angle + 90;
+            }
+            else {
+                return 180 - angle + 90;
+            }
+        }
+        else {
+            if (lat2 > lat1) {
+                return 360 - angle + 90;
+            }
+            else {
+                return 180 + angle + 90;
             }
         }
     }
@@ -201,17 +254,32 @@ class Train {
         return [startcoord[0]+d*(endcoord[0]-startcoord[0]), startcoord[1]+d*(endcoord[1]-startcoord[1])];
     }
 
-    static buildGeoJSON(lon, lat, train_index) {
-        return [{
+    static buildGeoJSON(coord, train_index, train_type, angle) {
+        var singe_type = "body";
+
+        if (train_type == "动车组" && (train_index==0 || train_index==8)) {
+            singe_type = "normal_head";
+        }
+        else if (train_type == "动车组" && (train_index==7 || train_index==15)) {
+            singe_type = "normal_tail";
+        }
+        else if (train_type == "高速铁路" && (train_index==0 || train_index==8)) {
+            singe_type = "high_head";
+        }
+        else if (train_type == "高速铁路" && (train_index==7 || train_index==15)) {
+            singe_type = "high_tail";
+        }
+
+        return {
             "type": "Feature",
             "geometry": {
                 "type": "Point",
-                "coordinates": [121.315625, 31.196169]
+                "coordinates": coord
             },
             "properties": {
-                "train_type": "high_head",
-                "icon_rotate": 0
+                "train_type": singe_type,
+                "icon_rotate": angle
             }
-        }];
+        };
     }
 }
