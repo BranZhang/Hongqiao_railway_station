@@ -144,10 +144,10 @@ class Train {
     static load_railway_data(data) {
         console.log("start.");
 
-        //在进站或者出站的5000米内可间，且保持加速度不变
-        Train.visible_length = 5000;
+        //在进站或者出站的6000米内可间，且保持加速度不变
+        Train.visible_length = 6000;
 
-        // 单量车厢长度为223.45米
+        // 单量车厢长度为22.345米
         Train.single_length = 22.345;
 
         Train.railway_data = {};
@@ -197,13 +197,6 @@ class Train {
                     else {
                         Train._concat_list(coordinates, Train.railway_data[ids[k]]["geometry"]["coordinates"], true, true);
                     }
-                    // if (Train._coord_same(coordinates[total_last_index],Train.railway_data[ids[k]]["geometry"]["coordinates"][0])
-                    // || Train._coord_same(coordinates[total_last_index],Train.railway_data[ids[k]]["geometry"]["coordinates"][current_last_index])) {
-                    //    Train._concat_list(coordinates, Train.railway_data[ids[k]]["geometry"]["coordinates"], true);
-                    // }
-                    // else {
-                    //     Train._concat_list(coordinates, Train.railway_data[ids[k]]["geometry"]["coordinates"]);
-                    // }
                 }
 
                 Train.railway_path_data[i][t["number"]] = coordinates;
@@ -212,7 +205,7 @@ class Train {
     }
 
     static _coord_same(coord1, coord2) {
-        return Math.abs(coord1[0]-coord2[0]<0.0000000000001) && Math.abs(coord1[1]-coord2[1]<0.0000000000001);
+        return Math.abs(coord1[0]-coord2[0])<0.00000000001 && Math.abs(coord1[1]-coord2[1])<0.00000000001;
     }
 
     static _concat_list(list1, list2, reverse, removeFirst) {
@@ -240,10 +233,10 @@ class Train {
     static calAngle(lon1, lat1, lon2, lat2) {
         if (lat1 == lat2) {
             if (lon2 > lon1) {
-                return 90 + 90;
+                return 180;
             }
             else {
-                return 270 + 90;
+                return 0;
             }
         }
 
@@ -253,15 +246,15 @@ class Train {
                 return angle + 90;
             }
             else {
-                return 180 - angle + 90;
+                return 270 - angle;
             }
         }
         else {
             if (lat2 > lat1) {
-                return 360 - angle + 90;
+                return 90 - angle;
             }
             else {
-                return 180 + angle + 90;
+                return 270 + angle;
             }
         }
     }

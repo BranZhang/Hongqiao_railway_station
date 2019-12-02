@@ -61,7 +61,7 @@
                 style: 'mapbox://styles/branzhang/ck3e2bq8g1pj21cquzpiuhwmc',
                 center: [121.315625, 31.196169],
                 zoom: 17,
-                minZoom: 16,
+                minZoom: 13,
                 maxZoom: 19
             });
 
@@ -115,6 +115,7 @@
                             "interpolate",
                             ["linear"],
                             ["zoom"],
+                            13, 0.1,
                             16, 0.25,
                             17, 0.45,
                             18.2, 1,
@@ -122,7 +123,7 @@
                         ],
                     },
                     'paint': {}
-                });
+                }, 'bridge-pedestrian-case');
 
                 animateTrain();
 
