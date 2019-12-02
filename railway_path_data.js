@@ -73,16 +73,16 @@ var railway_path_data = {
         ]
     },
     "S_high_out": {
-        "preffix": [16],
+        "preffix": [16,6,33,34,43,41,47,55,56],
         "station": [
-            {"number": 6, "route": []},
-            {"number": 20, "route": []},
+            {"number": 6, "route": [57,71,70,112,115,114,127,180,181,318]},
+            {"number": 20, "route": [59,53,52,69,74,109,110,134,332]},
         ]
     },
     "S_high_in": {
-        "preffix": [15],
+        "preffix": [15,5,32,31,39,42,46,54,53],
         "station": [
-            {"number": 4, "route": []},
+            {"number": 4, "route": [66,70,113,112,124,126,125,199,198,316]},
         ]
     }
 };

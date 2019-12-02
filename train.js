@@ -95,13 +95,47 @@ class Train {
             }
             else if (this.arrive_hongqiao_time < time) {
                 //列车进站了，停在了站台上
+                passed_distance = 0;
             }
             else {
-                
+                //正在从上一个站台开往虹桥
+                passed_distance = (this.arrive_hongqiao_time-time)/1000 * (this.arrive_hongqiao_time-time)/1000*this.accelerate / 2;
             }
 
-            // todo
-            return [];
+            //太远了，还没开到显示的范围，不显示了
+            if (passed_distance > Train.visible_length) {
+                return [];
+            }
+
+            for(var i=this.route_path_coords.length-1; i > 0; i--) {
+                var coord1 = this.route_path_coords[i];
+                var coord2 = this.route_path_coords[i-1];
+                var tmp_distance = Train.calDistanceInM(coord1[0], coord1[1], coord2[0], coord2[1]);
+                if(tmp_distance < passed_distance) {
+                    passed_distance -= tmp_distance;
+                }
+                else {
+                    result_coords.push(Train.getLocationByDistance(coord1, coord2, passed_distance/tmp_distance));
+                    if (train_index > 0) {
+                        train_index -= 1;
+                        passed_distance += Train.single_length;
+                        i += 1;
+                    }
+                }
+
+                if (train_index == 0) {
+                    break;
+                }
+            }
+
+            for (var k=0; k<result_coords.length-1; k++) {
+                var coord1 = result_coords[k];
+                var coord2 = result_coords[k+1];
+                var center = [(coord1[0]+coord2[0])/2, (coord1[1]+coord2[1])/2];
+                var angle = Train.calAngle(coord1[0], coord1[1], coord2[0], coord2[1]);
+                
+                results.push(Train.buildGeoJSON(center, k, this.train_type, angle));
+            }
         }
 
         return results;
