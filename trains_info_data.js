@@ -1,3 +1,9 @@
+// path_code:
+// {direction}_{train}_{type}
+// direction: N:从虹桥站北边进站， S:从虹桥站南边进站
+// train:     high:高速铁路，     normal:动车组
+// type:      out:驶出，          in:驶入
+
 var trains_info = [
 	{
 		"name": "G7192",

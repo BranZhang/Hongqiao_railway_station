@@ -72,7 +72,7 @@ class Train {
                     }
                 }
 
-                if (train_index == 0) {
+                if (train_index === 0) {
                     break;
                 }
             }
@@ -123,7 +123,7 @@ class Train {
                     }
                 }
 
-                if (train_index == 0) {
+                if (train_index === 0) {
                     break;
                 }
             }
@@ -231,7 +231,7 @@ class Train {
 
     // 以正东方向为0度
     static calAngle(lon1, lat1, lon2, lat2) {
-        if (lat1 == lat2) {
+        if (lat1 === lat2) {
             if (lon2 > lon1) {
                 return 180;
             }
@@ -284,16 +284,16 @@ class Train {
     static buildGeoJSON(coord, train_index, train_type, angle) {
         var singe_type = "body";
 
-        if (train_type == "动车组" && (train_index==0 || train_index==8)) {
+        if (train_type === "动车组" && (train_index===0 || train_index===8)) {
             singe_type = "normal_head";
         }
-        else if (train_type == "动车组" && (train_index==7 || train_index==15)) {
+        else if (train_type === "动车组" && (train_index===7 || train_index===15)) {
             singe_type = "normal_tail";
         }
-        else if (train_type == "高速铁路" && (train_index==0 || train_index==8)) {
+        else if (train_type === "高速铁路" && (train_index===0 || train_index===8)) {
             singe_type = "high_head";
         }
-        else if (train_type == "高速铁路" && (train_index==7 || train_index==15)) {
+        else if (train_type === "高速铁路" && (train_index===7 || train_index===15)) {
             singe_type = "high_tail";
         }
 

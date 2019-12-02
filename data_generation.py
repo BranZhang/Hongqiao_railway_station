@@ -126,7 +126,7 @@ def get_all_trains_info():
             for train_data in result_json['data']:
                 trains.add(train_data['trainname'])
 
-    pool = ThreadPool(1)
+    pool = ThreadPool(4)
     results = pool.map(get_train_info_by_name, list(trains))
 
     if len(results) < 0:
