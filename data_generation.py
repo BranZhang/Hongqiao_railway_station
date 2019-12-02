@@ -42,6 +42,10 @@ def get_train_info_by_name(name):
     
     result_json = json.loads(r.text)
 
+    # first: 从虹桥站始发的车次
+    # last: 以虹桥站为终点的车次
+    # pass_in: 路过虹桥站，即将驶入的车次
+    # pass_out: 路过虹桥站，即将驶出的车次
     for i in range(len(result_json['stationList'])):
         if result_json['stationList'][i]['station'] != STATION_NAME:
             continue
@@ -75,7 +79,7 @@ def get_train_info_by_name(name):
         else:
             results.append({
                 "name": name,
-                "route_type": "pass_in",
+                "route_type": "pass_out",
                 "current_station": result_json['stationList'][i]['station'],
                 "next_station": result_json['stationList'][i+1]['station'],
                 "arrive_hongqiao_time": string2time(result_json['stationList'][i]['aTime']),
@@ -87,7 +91,7 @@ def get_train_info_by_name(name):
             })
             results.append({
                 "name": name,
-                "route_type": "pass_out",
+                "route_type": "pass_in",
                 "current_station": result_json['stationList'][i-1]['station'],
                 "next_station": result_json['stationList'][i]['station'],
                 "arrive_hongqiao_time": string2time(result_json['stationList'][i]['aTime']),

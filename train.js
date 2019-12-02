@@ -37,7 +37,7 @@ class Train {
         var result_coords = [];
         var results = [];
 
-        if (this.route_type === 'pass_in' || this.route_type === 'first') {
+        if (this.route_type === 'pass_out' || this.route_type === 'first') {
             // 从虹桥出发的列车
             if (this.arrive_hongqiao_time > time) {
                 //列车还没进站

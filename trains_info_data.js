@@ -2,7 +2,7 @@ var trains_info = [
 	{
 		"name": "G7192",
 		"path_code": "N_high_out",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "苏州北",
 		"arrive_hongqiao_time": [
@@ -21,7 +21,7 @@ var trains_info = [
 	{
 		"name": "G7371",
 		"path_code": "S_high_out",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "金山北",
 		"arrive_hongqiao_time": [
@@ -40,7 +40,7 @@ var trains_info = [
 	{
 		"name": "G7371",
 		"path_code": "N_normal_in",
-		"route_type": "pass_out",
+		"route_type": "pass_in",
 		"current_station": "阳澄湖",
 		"next_station": "上海虹桥",
 		"arrive_hongqiao_time": [
@@ -99,7 +99,7 @@ var trains_info = [
 	{
 		"name": "G7600",
 		"path_code": "N_high_out",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "昆山南",
 		"arrive_hongqiao_time": [
@@ -118,7 +118,7 @@ var trains_info = [
 	{
 		"name": "G7600",
 		"path_code": "S_high_in",
-		"route_type": "pass_out",
+		"route_type": "pass_in",
 		"current_station": "松江南",
 		"next_station": "上海虹桥",
 		"arrive_hongqiao_time": [
@@ -137,7 +137,7 @@ var trains_info = [
 	{
 		"name": "G7359",
 		"path_code": "S_high_out",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "嘉兴南",
 		"arrive_hongqiao_time": [
@@ -156,7 +156,7 @@ var trains_info = [
 	{
 		"name": "G7359",
 		"path_code": "N_high_in",
-		"route_type": "pass_out",
+		"route_type": "pass_in",
 		"current_station": "上海",
 		"next_station": "上海虹桥",
 		"arrive_hongqiao_time": [
@@ -232,7 +232,7 @@ var trains_info = [
 	{
 		"name": "G7520",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "昆山南",
 		"arrive_hongqiao_time": [
@@ -251,7 +251,7 @@ var trains_info = [
 	{
 		"name": "G7520",
 		"path_code": "",
-		"route_type": "pass_out",
+		"route_type": "pass_in",
 		"current_station": "金山北",
 		"next_station": "上海虹桥",
 		"arrive_hongqiao_time": [
@@ -290,7 +290,7 @@ var trains_info = [
 	{
 		"name": "D3126",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "昆山南",
 		"arrive_hongqiao_time": [
@@ -309,7 +309,7 @@ var trains_info = [
 	{
 		"name": "G1227",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "嘉兴南",
 		"arrive_hongqiao_time": [
@@ -328,7 +328,7 @@ var trains_info = [
 	{
 		"name": "G1227",
 		"path_code": "",
-		"route_type": "pass_out",
+		"route_type": "pass_in",
 		"current_station": "苏州北",
 		"next_station": "上海虹桥",
 		"arrive_hongqiao_time": [
@@ -366,7 +366,7 @@ var trains_info = [
 	{
 		"name": "G7590",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "昆山南",
 		"arrive_hongqiao_time": [
@@ -385,7 +385,7 @@ var trains_info = [
 	{
 		"name": "G7590",
 		"path_code": "",
-		"route_type": "pass_out",
+		"route_type": "pass_in",
 		"current_station": "嘉兴南",
 		"next_station": "上海虹桥",
 		"arrive_hongqiao_time": [
@@ -404,7 +404,7 @@ var trains_info = [
 	{
 		"name": "D3071",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "上海南",
 		"arrive_hongqiao_time": [
@@ -481,7 +481,7 @@ var trains_info = [
 	{
 		"name": "G1510",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "昆山南",
 		"arrive_hongqiao_time": [
@@ -500,7 +500,7 @@ var trains_info = [
 	{
 		"name": "G1510",
 		"path_code": "",
-		"route_type": "pass_out",
+		"route_type": "pass_in",
 		"current_station": "嘉兴南",
 		"next_station": "上海虹桥",
 		"arrive_hongqiao_time": [
@@ -539,7 +539,7 @@ var trains_info = [
 	{
 		"name": "G1865",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "嘉兴南",
 		"arrive_hongqiao_time": [
@@ -558,7 +558,7 @@ var trains_info = [
 	{
 		"name": "G7584",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "昆山南",
 		"arrive_hongqiao_time": [
@@ -577,7 +577,7 @@ var trains_info = [
 	{
 		"name": "G7584",
 		"path_code": "",
-		"route_type": "pass_out",
+		"route_type": "pass_in",
 		"current_station": "松江南",
 		"next_station": "上海虹桥",
 		"arrive_hongqiao_time": [
@@ -616,7 +616,7 @@ var trains_info = [
 	{
 		"name": "G1378",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "苏州北",
 		"arrive_hongqiao_time": [
@@ -673,7 +673,7 @@ var trains_info = [
 	{
 		"name": "G7491",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "杭州东",
 		"arrive_hongqiao_time": [
@@ -692,7 +692,7 @@ var trains_info = [
 	{
 		"name": "G7491",
 		"path_code": "",
-		"route_type": "pass_out",
+		"route_type": "pass_in",
 		"current_station": "昆山南",
 		"next_station": "上海虹桥",
 		"arrive_hongqiao_time": [
@@ -769,7 +769,7 @@ var trains_info = [
 	{
 		"name": "G43",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "嘉兴南",
 		"arrive_hongqiao_time": [
@@ -788,7 +788,7 @@ var trains_info = [
 	{
 		"name": "G43",
 		"path_code": "",
-		"route_type": "pass_out",
+		"route_type": "pass_in",
 		"current_station": "苏州北",
 		"next_station": "上海虹桥",
 		"arrive_hongqiao_time": [
@@ -846,7 +846,7 @@ var trains_info = [
 	{
 		"name": "G7432",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "昆山南",
 		"arrive_hongqiao_time": [
@@ -942,7 +942,7 @@ var trains_info = [
 	{
 		"name": "G7596",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "苏州北",
 		"arrive_hongqiao_time": [
@@ -1079,7 +1079,7 @@ var trains_info = [
 	{
 		"name": "G7314",
 		"path_code": "N_normal_out",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "昆山南",
 		"arrive_hongqiao_time": [
@@ -1196,7 +1196,7 @@ var trains_info = [
 	{
 		"name": "G7360",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "上海西",
 		"arrive_hongqiao_time": [
@@ -1253,7 +1253,7 @@ var trains_info = [
 	{
 		"name": "G1951",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "嘉善南",
 		"arrive_hongqiao_time": [
@@ -1272,7 +1272,7 @@ var trains_info = [
 	{
 		"name": "D2282",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "苏州",
 		"arrive_hongqiao_time": [
@@ -1311,7 +1311,7 @@ var trains_info = [
 	{
 		"name": "D3067",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "上海南",
 		"arrive_hongqiao_time": [
@@ -1407,7 +1407,7 @@ var trains_info = [
 	{
 		"name": "G7350",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "苏州",
 		"arrive_hongqiao_time": [
@@ -1426,7 +1426,7 @@ var trains_info = [
 	{
 		"name": "G155",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "嘉兴南",
 		"arrive_hongqiao_time": [
@@ -1465,7 +1465,7 @@ var trains_info = [
 	{
 		"name": "D3059",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "嘉兴南",
 		"arrive_hongqiao_time": [
@@ -1542,7 +1542,7 @@ var trains_info = [
 	{
 		"name": "D3063",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "上海南",
 		"arrive_hongqiao_time": [
@@ -1621,7 +1621,7 @@ var trains_info = [
 	{
 		"name": "D3001",
 		"path_code": "",
-		"route_type": "pass_in",
+		"route_type": "pass_out",
 		"current_station": "上海虹桥",
 		"next_station": "上海南",
 		"arrive_hongqiao_time": [
