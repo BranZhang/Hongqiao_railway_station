@@ -48,31 +48,31 @@
 
             // to store and cancel the animation
             var animation;
-            var virtualStartTime = new Date(2019, 0, 1, 19, 22, 0);
+            var virtualStartTime = new Date(2019, 0, 1, 20, 29, 40);
             var virtualCurrentTime = virtualStartTime;
-            var virtualEndTime = new Date(2019, 0, 1, 19, 50, 0);
+            var virtualEndTime = new Date(2019, 0, 1, 20, 50, 0);
             // 以 N 倍速播放
-            var speed = 10;
+            var speed = 1;
 
             map.on('load', function() {
-                var imageSource = {
-                    'body': 'images/body.png',
-                    'high_head': 'images/high_head.png',
-                    'high_tail': 'images/high_tail.png',
-                    'normal_head': 'images/normal_head.png',
-                    'normal_tail': 'images/normal_tail.png',
-                }
+                // var imageSource = {
+                //     'body': 'images/body.png',
+                //     'high_head': 'images/high_head.png',
+                //     'high_tail': 'images/high_tail.png',
+                //     'normal_head': 'images/normal_head.png',
+                //     'normal_tail': 'images/normal_tail.png',
+                // }
 
-                for(var imageName in imageSource) {
-                    (function(tmp) {
-                        map.loadImage(imageSource[tmp], function (error, image) {
-                            if (error) {
-                                throw error;
-                            }
-                            map.addImage(tmp, image);
-                        });
-                    })(imageName);
-                }
+                // for(var imageName in imageSource) {
+                //     (function(tmp) {
+                //         map.loadImage(imageSource[tmp], function (error, image) {
+                //             if (error) {
+                //                 throw error;
+                //             }
+                //             map.addImage(tmp, image);
+                //         });
+                //     })(imageName);
+                // }
 
                 map.addSource('train_source', {
                     type: 'geojson',
