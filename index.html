@@ -65,6 +65,12 @@
                 maxZoom: 19
             });
 
+            // Set the map's max bounds.
+            map.setMaxBounds([
+                [121.115625, 30.996169], // [west, south]
+                [121.515625, 31.396169]  // [east, north]
+            ]);
+
             // to store and cancel the animation
             var animation;
             var virtualStartTime = new Date(2019, 0, 1, 17, 56, 50);
