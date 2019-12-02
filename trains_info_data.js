@@ -1,7 +1,7 @@
 var trains_info = [
 	{
 		"name": "G7192",
-		"path_code": "",
+		"path_code": "N_high_out",
 		"route_type": "pass_in",
 		"current_station": "上海虹桥",
 		"next_station": "苏州北",
@@ -20,7 +20,7 @@ var trains_info = [
 	},
 	{
 		"name": "G7371",
-		"path_code": "",
+		"path_code": "S_high_out",
 		"route_type": "pass_in",
 		"current_station": "上海虹桥",
 		"next_station": "金山北",
@@ -39,7 +39,7 @@ var trains_info = [
 	},
 	{
 		"name": "G7371",
-		"path_code": "",
+		"path_code": "N_normal_in",
 		"route_type": "pass_out",
 		"current_station": "阳澄湖",
 		"next_station": "上海虹桥",
@@ -58,7 +58,7 @@ var trains_info = [
 	},
 	{
 		"name": "G675",
-		"path_code": "",
+		"path_code": "N_high_in",
 		"route_type": "last",
 		"current_station": "昆山南",
 		"next_station": "上海虹桥",
@@ -78,7 +78,7 @@ var trains_info = [
 	},
 	{
 		"name": "G1817",
-		"path_code": "",
+		"path_code": "N_high_in",
 		"route_type": "last",
 		"current_station": "苏州北",
 		"next_station": "上海虹桥",
@@ -98,7 +98,7 @@ var trains_info = [
 	},
 	{
 		"name": "G7600",
-		"path_code": "",
+		"path_code": "N_high_out",
 		"route_type": "pass_in",
 		"current_station": "上海虹桥",
 		"next_station": "昆山南",
@@ -117,7 +117,7 @@ var trains_info = [
 	},
 	{
 		"name": "G7600",
-		"path_code": "",
+		"path_code": "S_high_in",
 		"route_type": "pass_out",
 		"current_station": "松江南",
 		"next_station": "上海虹桥",
@@ -136,7 +136,7 @@ var trains_info = [
 	},
 	{
 		"name": "G7359",
-		"path_code": "",
+		"path_code": "S_high_out",
 		"route_type": "pass_in",
 		"current_station": "上海虹桥",
 		"next_station": "嘉兴南",
@@ -155,7 +155,7 @@ var trains_info = [
 	},
 	{
 		"name": "G7359",
-		"path_code": "",
+		"path_code": "N_high_in",
 		"route_type": "pass_out",
 		"current_station": "上海",
 		"next_station": "上海虹桥",
@@ -174,7 +174,7 @@ var trains_info = [
 	},
 	{
 		"name": "G7525",
-		"path_code": "",
+		"path_code": "S_high_out",
 		"route_type": "first",
 		"current_station": "上海虹桥",
 		"next_station": "嘉兴南",
@@ -193,7 +193,7 @@ var trains_info = [
 	},
 	{
 		"name": "G7120",
-		"path_code": "",
+		"path_code": "N_high_out",
 		"route_type": "first",
 		"current_station": "上海虹桥",
 		"next_station": "昆山南",
@@ -634,7 +634,7 @@ var trains_info = [
 	},
 	{
         "name": "G7122",
-        "path_code": "N_normal_out",
+        "path_code": "N_high_out",
 		"route_type": "first",
 		"current_station": "上海虹桥",
 		"next_station": "昆山南",
