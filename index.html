@@ -89,12 +89,13 @@
 
             // to store and cancel the animation
             var animation;
-            var virtualStartTime = new Date(2019, 0, 1, 17, 56, 50);
+            var virtualStartTime = new Date(2019, 0, 1, 18, 3, 0);
             var virtualCurrentTime = virtualStartTime;
             var virtualEndTime = new Date(2019, 0, 1, 20, 50, 0);
             // 以 N 倍速播放
             var speed = 10;
             var resetTime = false;
+            var last_timestamp;
 
             var pauseButton;
 
@@ -164,19 +165,28 @@
                 });
 
                 function animateTrain(timestamp) {
-                    if (resetTime) {
-                        virtualCurrentTime = new Date(virtualStartTime.getTime() + timestamp*speed - (virtualCurrentTime.getTime()-virtualStartTime.getTime()));
-                        resetTime = false;
-                    }
-
                     if (timestamp !== undefined) {
+                        if (resetTime) {
+                            virtualStartTime = new Date(virtualStartTime.getTime() - speed*(timestamp - last_timestamp));
+                            resetTime = false;
+                        }
+
                         virtualCurrentTime = new Date(virtualStartTime.getTime() + timestamp*speed);
+                        last_timestamp = timestamp;
                     }
 
                     var updatedFeatures = [];
 
                     trains.forEach(t => {
-                        updatedFeatures.push.apply(updatedFeatures, t.getRealTimeLocation(virtualCurrentTime));
+                        var tmp = t.getRealTimeLocation(virtualCurrentTime);
+                        // if (t.name === 'G7192' && tmp.length > 10) {
+                        //     map.jumpTo({
+                        //         center: tmp[8]["geometry"]["coordinates"],
+                        //         bearing: tmp[8]["properties"]["icon_rotate"] - 90,
+                        //         duration: 2000
+                        //     });
+                        // }
+                        updatedFeatures.push.apply(updatedFeatures, tmp);
                     });
 
                     map.getSource('train_source').setData({
