@@ -140,7 +140,7 @@ class Train {
 
         return results;
     }
- 
+
     static load_railway_data(data) {
         console.log("start.");
 
@@ -240,7 +240,8 @@ class Train {
             }
         }
 
-        var angle = Math.atan(Math.abs((lon2-lon1)/(lat2-lat1))) * 180 / Math.PI
+        // 粗暴的方式解决角度计算有误差的问题。
+        var angle = Math.atan(Math.abs((lon2-lon1)/((lat2-lat1)*1.18))) * 180 / Math.PI
         if (lon2 > lon1) {
             if (lat2 > lat1) {
                 return angle + 90;
