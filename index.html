@@ -26,11 +26,10 @@
     </head>
     <body>
         <style>
-            button {
-            position: absolute;
-            margin: 20px;
+            #pause {
+                width: inherit;
+                color: black;
             }
-             
             #pause::after {
             content: 'Pause';
             }
@@ -38,11 +37,26 @@
             #pause.pause::after {
             content: 'Play';
             }
+            .pause-ctrl {
+                width: 50px;
+            }
         </style>
         <div id='map'></div>
-        <button id='pause'></button>
         <script>
-            var pauseButton = document.getElementById('pause');
+            class PauseControl {
+                onAdd(map) {
+                    this._map = map;
+                    this._container = document.createElement('div');
+                    this._container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group pause-ctrl';
+                    this._container.innerHTML = "<button id='pause'></button>";
+                    return this._container;
+                }
+
+                onRemove() {
+                    this._container.parentNode.removeChild(this._container);
+                    this._map = undefined;
+                }
+            }
 
             Train.load_railway_data(raw_railway_data);
             Train.load_railway_path_data(railway_path_data);
@@ -64,6 +78,8 @@
                 minZoom: 13,
                 maxZoom: 18
             });
+            map.addControl(new mapboxgl.FullscreenControl());
+            map.addControl(new PauseControl(), 'top-left');
 
             // Set the map's max bounds.
             map.setMaxBounds([
@@ -78,8 +94,13 @@
             var virtualEndTime = new Date(2019, 0, 1, 20, 50, 0);
             // 以 N 倍速播放
             var speed = 10;
+            var resetTime = false;
+
+            var pauseButton;
 
             map.on('load', function() {
+                pauseButton = document.getElementById('pause');
+
                 var imageSource = {
                     'body': 'images/body.png',
                     'high_head': 'images/high_head.png',
@@ -137,13 +158,17 @@
                     if (pauseButton.classList.contains('pause')) {
                         cancelAnimationFrame(animation);
                     } else {
-                        // resetTime = true;
+                        resetTime = true;
                         animateTrain();
                     }
                 });
 
                 function animateTrain(timestamp) {
-                    
+                    if (resetTime) {
+                        virtualCurrentTime = new Date(virtualStartTime.getTime() + timestamp*speed - (virtualCurrentTime.getTime()-virtualStartTime.getTime()));
+                        resetTime = false;
+                    }
+
                     if (timestamp !== undefined) {
                         virtualCurrentTime = new Date(virtualStartTime.getTime() + timestamp*speed);
                     }
