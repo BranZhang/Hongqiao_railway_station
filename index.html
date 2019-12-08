@@ -29,16 +29,10 @@
             #pause {
                 width: inherit;
                 color: black;
-            }
-            #pause::after {
-            content: 'Pause';
-            }
-             
-            #pause.pause::after {
-            content: 'Play';
+                text-align: center;
             }
             .pause-ctrl {
-                width: 50px;
+                width: 100px;
             }
         </style>
         <div id='map'></div>
@@ -89,13 +83,15 @@
 
             // to store and cancel the animation
             var animation;
-            var virtualStartTime = new Date(2019, 0, 1, 18, 3, 0);
-            var virtualCurrentTime = virtualStartTime;
-            var virtualEndTime = new Date(2019, 0, 1, 20, 50, 0);
+            var startTime = new Date(2019, 0, 1, 18, 3, 0);
+            var currentTime = startTime;
+            var endTime = new Date(2019, 0, 1, 18, 40, 0);
             // 以 N 倍速播放
-            var speed = 10;
+            var speed = 5;
             var resetTime = false;
             var last_timestamp;
+            var timeDelay = 0;
+            var playing = true;
 
             var pauseButton;
 
@@ -155,37 +151,35 @@
                 animateTrain();
 
                 pauseButton.addEventListener('click', function() {
-                    pauseButton.classList.toggle('pause');
-                    if (pauseButton.classList.contains('pause')) {
+                    if (playing) {
                         cancelAnimationFrame(animation);
+                        pauseButton.innerHTML = "Play<br>" + currentTime.toLocaleTimeString('en-US');
                     } else {
                         resetTime = true;
                         animateTrain();
                     }
+                    playing = !playing;
                 });
 
                 function animateTrain(timestamp) {
                     if (timestamp !== undefined) {
                         if (resetTime) {
-                            virtualStartTime = new Date(virtualStartTime.getTime() - speed*(timestamp - last_timestamp));
+                            timeDelay = timeDelay + timestamp - last_timestamp;
                             resetTime = false;
                         }
 
-                        virtualCurrentTime = new Date(virtualStartTime.getTime() + timestamp*speed);
+                        timeChange = ((timestamp-timeDelay) * speed) % (endTime.getTime() - startTime.getTime());
+
+                        currentTime = new Date(startTime.getTime() + timeChange);
                         last_timestamp = timestamp;
+
+                        pauseButton.innerHTML = "Pause<br>" + currentTime.toLocaleTimeString('en-US');
                     }
 
                     var updatedFeatures = [];
 
                     trains.forEach(t => {
-                        var tmp = t.getRealTimeLocation(virtualCurrentTime);
-                        // if (t.name === 'G7192' && tmp.length > 10) {
-                        //     map.jumpTo({
-                        //         center: tmp[8]["geometry"]["coordinates"],
-                        //         bearing: tmp[8]["properties"]["icon_rotate"] - 90,
-                        //         duration: 2000
-                        //     });
-                        // }
+                        var tmp = t.getRealTimeLocation(currentTime);
                         updatedFeatures.push.apply(updatedFeatures, tmp);
                     });
 
@@ -194,13 +188,11 @@
                         "features": updatedFeatures
                     });
 
-                    if (virtualCurrentTime < virtualEndTime) {
-                        // Request the next frame of the animation.
-                        animation = requestAnimationFrame(animateTrain);
+                    if (currentTime >= endTime) {
+                        console.log("one turn end.");
                     }
-                    else {
-                        console.log("end.");
-                    }                    
+
+                    animation = requestAnimationFrame(animateTrain);
                 }
             });
         </script>
